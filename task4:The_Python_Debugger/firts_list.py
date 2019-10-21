@@ -28,4 +28,4 @@ class firts_list:
 
 if __name__ == '__main__':
     l = firts_list(int(sys.argv[1]))
-    print l.list
+    print("l.list")
