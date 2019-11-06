@@ -51,8 +51,11 @@ class firts_list:
 
 
 if __name__ == '__main__':
+    #import doctest
     """
     Si ejecutes el fitxer [firsts_list.py] com a principal[main] entra.    
     """
+    #doctest.testmod()
     l = firts_list(int(sys.argv[1]))
     print(l.list)
+    
