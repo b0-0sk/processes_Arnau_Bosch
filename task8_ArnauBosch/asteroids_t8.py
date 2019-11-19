@@ -137,6 +137,7 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.motion = Vector(0, 0)
+
 class Asteroid(Entity):
     """docstring for Asteroid."""
     def __init__(self, position):
@@ -144,7 +145,7 @@ class Asteroid(Entity):
         super(Asteroid, self).__init__(self.orig_image, position)
         #self.motion = Vector.from_degrees(random.randint(0,360), 3)
         self.motion = Vector(random.choice([-2,-1,1,2]),random.choice([-2,-1,1,2]))
-        self.duration = 250 #Luego en las rondas se cambiara con el TIEMPO   
+        self.duration = 200000 #Luego en las rondas se cambiara con el TIEMPO
         
     def update(self):
         self.duration = self.duration - 1
@@ -152,13 +153,17 @@ class Asteroid(Entity):
             self.kill()
 
 class Bullet(Entity):
-    """docstring for Bullet."""
+    """Bullet code"""
     def __init__(self, position, direction, magnitude):
+        
+
         self.orig_image = pygame.image.load('assets/bullet.png')
         super(Bullet, self).__init__(self.orig_image, position)
+
         self.motion = Vector.from_degrees(direction,magnitude)
-        self.duration = 37
+        self.duration = 35
     def update(self):
+        
         self.duration = self.duration-1
         if self.duration == 0:
             self.kill()
@@ -202,6 +207,26 @@ class Player(Entity):
         self.rect = self.image.get_rect()
         self.rect.center = current
 
+player = Player((400, 300))
+world = World((800, 600), player)
+clock = pygame.time.Clock()
+world.running = True
+
+def addsteroids():
+
+    while world.running:
+        if len(world.sprites) < 10:
+            x  = random.randint(0,800)
+            y = random.randint(0,600)
+            print ("X:" + str(x)  )
+            print ("Y:" + str(y)  )
+    
+            #(random.choice([0,800]),random.choice([0,600])
+            asteroid = Asteroid((x,y))
+            #asteroid = Asteroid((random.randint(0,800),random.randint(0,600)))
+            world.sprites.add(asteroid)
+        world.update()
+        clock.tick(9)
 
 def main():
     """ runs our application """
@@ -213,23 +238,22 @@ def main():
     pygame.display.set_caption("Asteroids 0.2")
 
     # store our game state
-    player = Player((400, 300))
-
-    world = World((800, 600), player)
+    
     world.pew = pygame.mixer.Sound('assets/pew.wav')
-
+    
+    fil = threading.Thread(target=addsteroids)
+    fil.start()
+    
     # use the clock to throttle the fps to something reasonable
-    clock = pygame.time.Clock()
     # main loop
-    running = True
-    while running:
+    while world.running :
         events = pygame.event.get()
-        if len(world.sprites) < 30:
-            addsteroids(world)
+    
+    
         # handle our events
         for event in events:
             if event.type == QUIT:
-                running = False
+                world.running = False
                 break
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
@@ -243,12 +267,6 @@ def main():
         pygame.display.flip()
         clock.tick(40)
 
-def addsteroids(world):
-    x  = random.randint(0,800)
-    y = random.randint(0,600)
-    #print ("X:" + str(x)  )
-    #print ("Y:" + str(y)  )
-    asteroid = Asteroid((x,y))
-    world.sprites.add(asteroid)
+
 if __name__ == "__main__":
     main()

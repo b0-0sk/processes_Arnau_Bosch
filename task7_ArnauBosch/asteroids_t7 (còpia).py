@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 import math
-import random
+
 import pygame
 from pygame.locals import *
-import threading
 
 
 class World(object):
@@ -29,9 +28,9 @@ class World(object):
 
         # setup our event handlers
         self.event_handlers = {
-            VIDEORESIZE: self.handle_resize,
-            #KEYDOWN: self.handle_keydown,
-            #KEYUP: self.handle_keyup
+             VIDEORESIZE: self.handle_resize,
+          #  KEYDOWN: self.handle_keydown,
+          #  KEYUP: self.handle_keyup
         }
 
     def update(self):
@@ -137,32 +136,6 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = position
         self.motion = Vector(0, 0)
-class Asteroid(Entity):
-    """docstring for Asteroid."""
-    def __init__(self, position):
-        self.orig_image = pygame.image.load('assets/asteroid.png')
-        super(Asteroid, self).__init__(self.orig_image, position)
-        #self.motion = Vector.from_degrees(random.randint(0,360), 3)
-        self.motion = Vector(random.choice([-2,-1,1,2]),random.choice([-2,-1,1,2]))
-        self.duration = 250 #Luego en las rondas se cambiara con el TIEMPO   
-        
-    def update(self):
-        self.duration = self.duration - 1
-        if self.duration == 0:
-            self.kill()
-
-class Bullet(Entity):
-    """docstring for Bullet."""
-    def __init__(self, position, direction, magnitude):
-        self.orig_image = pygame.image.load('assets/bullet.png')
-        super(Bullet, self).__init__(self.orig_image, position)
-        self.motion = Vector.from_degrees(direction,magnitude)
-        self.duration = 37
-    def update(self):
-        self.duration = self.duration-1
-        if self.duration == 0:
-            self.kill()
-
 
 
 class Player(Entity):
@@ -170,7 +143,6 @@ class Player(Entity):
 
     def __init__(self, position):
         self.orig_image = pygame.image.load('assets/ship.png')
-        self.position = position
         super(Player, self).__init__(self.orig_image, position)
         self.facing = Vector.from_degrees(90)
         self.forward = False
@@ -214,27 +186,22 @@ def main():
 
     # store our game state
     player = Player((400, 300))
-
     world = World((800, 600), player)
     world.pew = pygame.mixer.Sound('assets/pew.wav')
 
     # use the clock to throttle the fps to something reasonable
     clock = pygame.time.Clock()
+
     # main loop
     running = True
     while running:
         events = pygame.event.get()
-        if len(world.sprites) < 30:
-            addsteroids(world)
+
         # handle our events
         for event in events:
             if event.type == QUIT:
                 running = False
                 break
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    bullet = Bullet(world.player.position, -90,10)
-                    world.sprites.add(bullet)
 
             world.handle_event(event)
 
@@ -243,12 +210,6 @@ def main():
         pygame.display.flip()
         clock.tick(40)
 
-def addsteroids(world):
-    x  = random.randint(0,800)
-    y = random.randint(0,600)
-    #print ("X:" + str(x)  )
-    #print ("Y:" + str(y)  )
-    asteroid = Asteroid((x,y))
-    world.sprites.add(asteroid)
+
 if __name__ == "__main__":
     main()
