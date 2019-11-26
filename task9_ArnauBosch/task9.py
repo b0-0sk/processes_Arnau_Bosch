@@ -17,17 +17,16 @@ def primers(num):
 if __name__ == '__main__':
 
     """
-        Es definiran els numeros dels processos segons el rang de numeros amb els que es treballint hi ha dos tipus:
+      Es definiren els números dels processos segons el rang de números amb els quals és treballant hi hauria dos tipus [Explicació objectiva]:
 
-            - Rang de numeros dels CALCULS RAPIDS: entre 0 a 100 mes o menys.
+        - Rang de números dels Càlculs Ràpids: entre 0 a 100 més o menys.
 
-                Quan els numeros son d'un rang més baix, lo que seria més optim seria posar els minims processos perquè aixi no ocupin memoria innecessariament i que no es demorir
-                més temps del necessari.
+            Quan els números són d'un rang més baix, el que seria més òptim seria posar els mínims processos perquè així no ocupin memòria innecessàriament i que no és demorar
+            més temps del necessari.
 
-            - Calculs lents apartir de 10.000.000 mes o menys
+        - Càlculs lents a partir de 10.000.000 més o menys
 
-                Quan els numeros son d'un rang alt, el que seria més optim seria posar els màxims processos possibles i que permetir el teu dispositiu per fer els calculs
-                en el menor temps.
+            Quan els números són d'un rang alt, el que seria més òptim seria posar els màxims processos possibles i que permeti el teu dispositiu per fer els càlculs en el menor temps.
     """
 
 
