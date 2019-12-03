@@ -195,9 +195,8 @@ class Player(Entity):
         if self.backward:
             #self.motion = self.motion + self.facing * self.accel
             self.motion = self.motion + self.facing * self.accel
-            print("Motion " + str(self.motion))
-            print("Facing " + str(self.facing))
-            print("Accel " + str(self.accel))
+           
+   
         degrees, _ = self.facing.to_degrees()
         if self.turn_left:
             degrees = (degrees + 10) % 360
