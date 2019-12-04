@@ -102,13 +102,7 @@ class World(object):
             player.turn_right = True
         if event.key == pygame.K_LEFT:
             player.turn_left = True
-
-
-
-
-
-
-
+            
 class Vector(object):
 
     def __init__(self, x, y):
@@ -243,7 +237,7 @@ class Asteroid(Entity):
         image = pygame.image.load('assets/asteroid.png')
         super(Asteroid, self).__init__(image, position)
         self.motion = Vector.from_degrees(random.randint(0, 360)) * 3
-        self.duration = 2000000000000
+        self.duration = 50
 
     def update(self):
         #time.sleep(1)
@@ -331,10 +325,10 @@ def main():
     """ runs our application """
 
     # main loop
-    supdate = Thread(target=update_s)
-    supdate2 = Thread(target=update_collision)
-    supdate.start()
-    supdate2.start()
+    s_update = Thread(target=update_s)
+    c_update = Thread(target=update_collision)
+    s_update.start()
+    c_update.start()
     while world.running:
 
         events = pygame.event.get()
