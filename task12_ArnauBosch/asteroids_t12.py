@@ -293,8 +293,8 @@ def cShootVSAsteroid():
     for i in [x for x in world.sprites if isinstance(x, Asteroid)]:
         for f in [y for y in world.sprites if isinstance(y, Bullet)]:
             if ( abs( f.rect.center[0] - i.rect.center[0]) < 25 and abs(f.rect.center[1] - i.rect.center[1]) < 25 ):
-                i.duration = 0
-                f.duration = 0
+                i.kill()
+                f.kill()
 
 def cShipVSAsteroid():
     for i in [x for x in world.sprites if isinstance(x,  Asteroid)]:
