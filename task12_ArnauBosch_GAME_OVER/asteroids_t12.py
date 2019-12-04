@@ -300,7 +300,14 @@ def cShipVSAsteroid():
     for i in [x for x in world.sprites if isinstance(x,  Asteroid)]:
         if ( abs( player.rect.center[0] - i.rect.center[0]) < 15 and abs(player.rect.center[1] - i.rect.center[1]) < 15 ):
                 gameOver(i)
-
+"""
+    I've added a: 
+        - Method gameOver()
+        - Method to eliminate asteroids [ killAsteroid() ], 
+        - Method to add a background image
+    And i've removed:
+        - The step of filling the red background
+ """
 
 
 def gameOver(asteroidKiller):
