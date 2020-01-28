@@ -11,7 +11,7 @@ s.bind((HOST, PORT))
 
 while True:
   data, addr = s.recvfrom(1024) # buffer size is 1024 bytes
-  #print "received message:", data
+  print addr, data
   if "bye" in data:
     print "dew"
     sleep(1)
