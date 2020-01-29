@@ -1,20 +1,38 @@
 # Echo client program
 import socket
+import threading
 
-HOST = "localhost"    # The remote host
-PORT = 50008          # The same port as used by the server
-
+HOST = 'localhost'   # The remote host
+PORT = 50006             # The same port as used by the server
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST,PORT))
-          
-while True:
-  
-  m = raw_input('Introduce algo: ')
-  s.sendall(m)
-  
-  print s.recv(1024)
-  #if "bye" in m:
- #   break
-  
+
+def enviar(s):
+    while True:
+        n = raw_input("Introdueix text: ")
+        s.sendall(n)
+
+        if n == "Bye":
+            break
+
+
+def recibir(s):
+    while True:
+        m = s.recv(1024)
+        print m
+
+        if m == "Bye":
+            s.sendall(m)
+            break
+
+t1 = threading.Thread(target=enviar, args=(s,))
+t1.daemon = True
+t1.start()
+
+t2 = threading.Thread(target=recibir, args=(s,))
+t2.start()
+
+#t1.join()
+t2.join()
+
 s.close()
-    

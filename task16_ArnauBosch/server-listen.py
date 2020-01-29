@@ -1,27 +1,41 @@
 # Echo server program
 import socket
 import time
-from time import sleep
+import threading
 
-HOST = 'localhost'                 # Symbolic name meaning all available interfaces
-PORT = 50008              # Arbitrary non-privileged port
+HOST = ''                 # Symbolic name meaning all available interfaces
+PORT = 50006              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
+
+s.bind((HOST,PORT))
 s.listen(1)
+conn, addr = s.accept()
 
-conn,addr = s.accept()
-conn.sendall("Conectat")
+def recibir(conn):
+    while True:
+        m = conn.recv(1024)
+        print m
+        if m == "Bye":
+            break
 
+def enviar(conn):
+    print "enviar"
+    while True:
+        n = raw_input("Introdueix dades: ")
+        conn.sendall(n)
 
-while True:
+        if n == "Bye":
+            conn.sendall(n)
+            break
 
-  data = conn.recv(1024)
-  
-  if "bye" in data:
-    s.sendall("Desconectat")
-    sleep(1)
-    s.close()
-    break
-  else:
-    print data
-  
+t1 = threading.Thread(target=enviar, args=(conn,))
+t1.daemon = True
+t1.start()
+
+t2 = threading.Thread(target=recibir, args=(conn,))
+t2.start()
+
+#t1.join()
+t2.join()
+
+s.close()
