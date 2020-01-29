@@ -32,7 +32,6 @@ t1.start()
 t2 = threading.Thread(target=recibir, args=(s,))
 t2.start()
 
-#t1.join()
 t2.join()
 
 s.close()
