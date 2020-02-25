@@ -99,7 +99,7 @@ def LoadMyEntry(ChatLog, EntryText):
 
 def LoadOtherEntry(ChatLog, EntryText):
     if EntryText != '':
-        list = EntryText.split(";")
+        list = EntryText.split("-")
 
         ChatLog.config(state=NORMAL)
         if ChatLog.index('end') != None:

@@ -6,7 +6,7 @@ from ChatFns import *
 #---------------------------------------------------#
 WindowTitle = 'JChat v0.1 - Client'
 HOST = 'localhost'
-PORT = 40001
+PORT = 40008
 s = socket(AF_INET, SOCK_STREAM)
 
 nomUsuari = raw_input("Introueix el teu nom d'usuari: ")
@@ -26,11 +26,11 @@ def ClickAction():
     EntryBox.delete("0.0",END)
 
     if (EntryText == 'Bye' or EntryText == 'Bye\n'):
-        s.sendall(EntryText+";"+nomUsuari)
+        s.sendall(EntryText+"-"+nomUsuari)
         base.destroy()
     else:
         #Send my mesage to all others
-        s.sendall(EntryText+";"+nomUsuari)
+        s.sendall(EntryText+"-"+nomUsuari)
 
 #---------------------------------------------------#
 #----------------- KEYBOARD EVENTS -----------------#
@@ -86,7 +86,7 @@ def ReceiveData():
     try:
         s.connect((HOST, PORT))
         LoadConnectionInfo(ChatLog, '[ Succesfully connected ]\n---------------------------------------------------------------')
-        LoadOtherEntry(ChatLog, nomUsuari+";Ha iniciado session\n")
+        LoadOtherEntry(ChatLog, nomUsuari+"-Ha iniciado session\n")
     except:
         LoadConnectionInfo(ChatLog, '[ Unable to connect ]')
         return
@@ -94,13 +94,13 @@ def ReceiveData():
     while 1:
         try:
             data = s.recv(1024)
-            msg = data.split(";")
+            msg = data.split("-")
 
         except:
             LoadConnectionInfo(ChatLog, '\n [ Your partner has disconnected ] \n')
             break
         if data != '':
-            LoadOtherEntry(ChatLog, msg[1]+";"+msg[0])
+            LoadOtherEntry(ChatLog, msg[1]+"-"+msg[0])
             if base.focus_get() == None:
                 FlashMyWindow(WindowTitle)
                 playsound('notif.wav')
