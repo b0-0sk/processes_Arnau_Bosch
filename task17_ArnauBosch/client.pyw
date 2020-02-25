@@ -1,6 +1,4 @@
-# -*- encoding: utf-8 -*-
-
-import threading
+import thread
 from ChatFns import *
 
 #---------------------------------------------------#
@@ -8,11 +6,10 @@ from ChatFns import *
 #---------------------------------------------------#
 WindowTitle = 'JChat v0.1 - Client'
 HOST = 'localhost'
-PORT = 9999
+PORT = 40001
 s = socket(AF_INET, SOCK_STREAM)
 
-
-
+nomUsuari = raw_input("Introueix el teu nom d'usuari: ")
 
 #---------------------------------------------------#
 #------------------ MOUSE EVENTS -------------------#
@@ -28,8 +25,12 @@ def ClickAction():
     #Erace previous message in Entry Box
     EntryBox.delete("0.0",END)
 
-    #Send my mesage to all others
-    s.sendall(EntryText.encode())
+    if (EntryText == 'Bye' or EntryText == 'Bye\n'):
+        s.sendall(EntryText+";"+nomUsuari)
+        base.destroy()
+    else:
+        #Send my mesage to all others
+        s.sendall(EntryText+";"+nomUsuari)
 
 #---------------------------------------------------#
 #----------------- KEYBOARD EVENTS -----------------#
@@ -71,7 +72,7 @@ EntryBox.bind("<Return>", DisableEntry)
 EntryBox.bind("<KeyRelease-Return>", PressAction)
 
 #Place all components on the screen
-scrollbar.place(x=376,y=6, height=386)
+scrollbar.place(x=376,y=7, height=386)
 ChatLog.place(x=6,y=6, height=386, width=370)
 EntryBox.place(x=128, y=401, height=90, width=265)
 SendButton.place(x=6, y=401, height=90)
@@ -85,6 +86,7 @@ def ReceiveData():
     try:
         s.connect((HOST, PORT))
         LoadConnectionInfo(ChatLog, '[ Succesfully connected ]\n---------------------------------------------------------------')
+        LoadOtherEntry(ChatLog, nomUsuari+";Ha iniciado session\n")
     except:
         LoadConnectionInfo(ChatLog, '[ Unable to connect ]')
         return
@@ -92,12 +94,13 @@ def ReceiveData():
     while 1:
         try:
             data = s.recv(1024)
+            msg = data.split(";")
+
         except:
             LoadConnectionInfo(ChatLog, '\n [ Your partner has disconnected ] \n')
             break
         if data != '':
-            uname = str(data).split(":")
-            LoadOtherEntry(ChatLog, uname[1], uname[0])
+            LoadOtherEntry(ChatLog, msg[1]+";"+msg[0])
             if base.focus_get() == None:
                 FlashMyWindow(WindowTitle)
                 playsound('notif.wav')
@@ -107,7 +110,6 @@ def ReceiveData():
             break
     #s.close()
 
-#threading.start_new_thread(ReceiveData,())
-threading.Thread(target=ReceiveData).start()
+thread.start_new_thread(ReceiveData,())
 
 base.mainloop()
