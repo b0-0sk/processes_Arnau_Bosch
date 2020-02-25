@@ -17,20 +17,24 @@ nomUsuari = raw_input("Introueix el teu nom d'usuari: ")
 def ClickAction():
     #Write message to chat window
     EntryText = FilteredMessage(EntryBox.get("0.0",END))
-    LoadMyEntry(ChatLog, EntryText)
-
-    #Scroll to the bottom of chat windows
-    ChatLog.yview(END)
-
-    #Erace previous message in Entry Box
-    EntryBox.delete("0.0",END)
-
-    if (EntryText == 'Bye' or EntryText == 'Bye\n'):
-        s.sendall(EntryText+"-"+nomUsuari)
-        base.destroy()
+    if (EntryText == ""):
+        pass
     else:
-        #Send my mesage to all others
-        s.sendall(EntryText+"-"+nomUsuari)
+        LoadMyEntry(ChatLog, EntryText)
+
+        #Scroll to the bottom of chat windows
+        ChatLog.yview(END)
+
+        #Erace previous message in Entry Box
+        EntryBox.delete("0.0",END)
+
+        if (EntryText == 'Bye' or EntryText == 'Bye\n'):
+            s.sendall(EntryText+"-"+nomUsuari)
+            base.destroy()
+        else:
+            #Send my mesage to all others
+            s.sendall(EntryText+"-"+nomUsuari)
+
 
 #---------------------------------------------------#
 #----------------- KEYBOARD EVENTS -----------------#
