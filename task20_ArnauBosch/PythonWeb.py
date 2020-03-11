@@ -8,10 +8,6 @@ HOST_ADDRESS = "192.168.2.127"
 HOST_PORT = 8073 # For SSL
 
 
-
-
-
-
 class RequestHandler(BaseHTTPRequestHandler):
     """ Our custom, example request handler """
     def do_GET(self):
@@ -33,8 +29,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         else:
             self.send_error(404,"nO eNCuEntRo lA pAgiNa jUliO :v")
         
-     
-  
+ 
 def run(server_class=HTTPServer, handler_class=BaseHTTPRequestHandler):
     """ follows example shown on docs.python.org """
     server_address = (HOST_ADDRESS, HOST_PORT)
